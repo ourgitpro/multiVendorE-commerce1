@@ -50,7 +50,7 @@ const Register = () => {
                   onChange={inputHandle}
                   value={state.email}
                   className="px-3 py-2 outline-none border border-slate-400 bg-transparent rounded-md"
-                  type="text"
+                  type="email"
                   name="email"
                   placeholder="Email"
                   id="email"
