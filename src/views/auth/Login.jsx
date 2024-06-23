@@ -21,7 +21,6 @@ const Login = () => {
   };
   return (
     <div>
-      <h1>Login Page</h1>
       <div className="min-w-screen min-h-screen bg-[#cdcae9] flex justify-center items-center">
         <div className="w-[350px] text-[#ffffff] p-2">
           <div className="bg-[#6f68d1] p-4 rounded-md">
