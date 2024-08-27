@@ -50,6 +50,22 @@ export const seller_login = createAsyncThunk(
     }
   }
 );
+export const profile_image_upload = createAsyncThunk(
+  "auth/profile_image_upload",
+  async (image, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await api.post("/profile-image-upload", image, {
+        withCredentials: true,
+      });
+      // console.log(data)
+      return fulfillWithValue(data);
+    } catch (error) {
+      // console.log(error.response.data)
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+// end method
 export const seller_register = createAsyncThunk(
   "auth/seller_register",
   async (info, { rejectWithValue, fulfillWithValue }) => {
@@ -67,6 +83,19 @@ export const seller_register = createAsyncThunk(
     }
   }
 );
+export const profile_info_add = createAsyncThunk(
+  'auth/profile_info_add',
+  async(info,{rejectWithValue, fulfillWithValue}) => { 
+      try { 
+          const {data} = await api.post('/profile-info-add',info,{withCredentials: true}) 
+          return fulfillWithValue(data)
+      } catch (error) {
+          // console.log(error.response.data)
+          return rejectWithValue(error.response.data)
+      }
+  }
+)
+// end method 
 const returnRole = (token) => {
   if (token) {
     const decodeToken = jwtDecode(token);
@@ -134,13 +163,29 @@ export const authReducer = createSlice({
       .addCase(seller_register.fulfilled, (state, { payload }) => {
         state.loader = false;
         state.successMessage = payload.message;
-        state.token = payload.token
-        state.role = returnRole(payload.token)
+        state.token = payload.token;
+        state.role = returnRole(payload.token);
       })
-     .addCase(get_user_info.fulfilled,(state,{payload})=>{
-      state.loader = false;
-      state.userInfo = payload.userInfo
-     })
+      .addCase(get_user_info.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.userInfo = payload.userInfo;
+      })
+      .addCase(profile_image_upload.pending, (state, { payload }) => {
+        state.loader = true;
+      })
+      .addCase(profile_image_upload.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.userInfo = payload.userInfo;
+        state.successMessage = payload.message;
+      })
+      .addCase(profile_info_add.pending, (state, { payload }) => {
+        state.loader = true; 
+    })
+    .addCase(profile_info_add.fulfilled, (state, { payload }) => {
+        state.loader = false;
+        state.userInfo = payload.userInfo
+        state.successMessage = payload.message
+    })
   },
 });
 export const { messageClear } = authReducer.actions;
